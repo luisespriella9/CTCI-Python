@@ -127,7 +127,7 @@ def zeroMatrix():
     return ""
 
 # Problem 1.9
-def stringRotation():
+def stringRotation(first, second):
     return ""
 
 if __name__ == "__main__":
@@ -157,3 +157,8 @@ if __name__ == "__main__":
     check(stringCompression("a"), "a")
 
     print("Test Rotate Matrix")
+
+    print("Test Zero Matrix")
+
+    print("Test String Rotation")
+    check(stringRotation("waterbottle","erbottlewat"), True)
