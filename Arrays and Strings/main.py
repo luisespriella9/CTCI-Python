@@ -22,9 +22,11 @@ def checkPermutation(first, second):
     firstSet = [0]*128
     secondSet = [0]*128
     for i in range(len(first)):
+        #fill both sets to count how many times each character appears for each word
         firstSet[ord(first[i])] += 1
         secondSet[ord(second[i])] += 1
     for i in range(128):
+        #compare set results
         if firstSet[i] != secondSet[i]:
             return False
     return True
@@ -50,7 +52,7 @@ def palindromePermutation(string):
     set = [0]*128
     for char in string:
         if (char.isalpha()):
-            #only count letters
+            #only letters
             set[ord(char)]+=1
     counter = 0
     for charCount in set:
@@ -59,6 +61,53 @@ def palindromePermutation(string):
         if (charCount%2 != 0):
             counter+=1
     return True
+
+# Problem 1.5
+def oneAway(first, second):
+    if (first == second):
+        #check if exact same word
+        return True
+    elif (len(first) == len(second)):
+        if (len(first) == 1):
+            #if both length of one and do not match given previous statement
+            return False
+        #check for replace character edit
+        counter = 0
+        for i in range(len(first)):
+            if (counter > 1 ):
+                return False
+            if (first[i] != second[i]):
+                counter += 1
+        return True
+    else:
+        #check for inserting or removing character. Get biggest string and find if any subset matches other string
+        if (len(first) > len(second)):
+            bigger = first
+            smaller = second
+        else:
+            bigger = second
+            smaller = first
+        for i in range(len(bigger)):
+            subset = bigger[:i]+bigger[i+1:]
+            if (subset == smaller):
+                return True
+        return False # as long as subset doesnt match smaller string
+
+# Problem 1.6
+def stringCompression():
+    return null
+
+# Problem 1.7
+def rotateMatrix():
+    return null
+
+# Problem 1.8
+def zeroMatrix():
+    return null
+
+# Problem 1.9
+def stringRotation():
+    return null
 
 if __name__ == "__main__":
     print("Test isUnique")
@@ -74,3 +123,9 @@ if __name__ == "__main__":
 
     print("Test Palindrome Permutation")
     check(palindromePermutation("Tact Coa"), True)
+
+    print("Test One Away")
+    check(oneAway("pale", "ple"), True)
+    check(oneAway("pales", "pale"), True)
+    check(oneAway("pale", "bale"), True)
+    check(oneAway("pale", "bake"), False)
