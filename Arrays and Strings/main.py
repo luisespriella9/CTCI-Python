@@ -91,23 +91,44 @@ def oneAway(first, second):
             subset = bigger[:i]+bigger[i+1:]
             if (subset == smaller):
                 return True
-        return False # as long as subset doesnt match smaller string
+        #as long as subset doesnt match smaller string
+        return False
 
 # Problem 1.6
-def stringCompression():
-    return null
+def stringCompression(string):
+    if (string == ""):
+        return ""
+    #latest char be the first char in the string
+    latestChar = string[0]
+    charAppearances = 0
+    compressedString = ""
+    for char in string:
+        if not char.isalpha():
+            continue
+        if (latestChar == char):
+            charAppearances += 1
+        else:
+            compressedString += str(latestChar) + str(charAppearances)
+            charAppearances = 1
+            latestChar = char
+    compressedString += str(latestChar) + str(charAppearances)
+    #check if compressed String is actually smaller, if not return original string
+    if (len(compressedString) < len(string)):
+        return compressedString
+    else:
+        return string
 
 # Problem 1.7
 def rotateMatrix():
-    return null
+    return ""
 
 # Problem 1.8
 def zeroMatrix():
-    return null
+    return ""
 
 # Problem 1.9
 def stringRotation():
-    return null
+    return ""
 
 if __name__ == "__main__":
     print("Test isUnique")
@@ -129,3 +150,10 @@ if __name__ == "__main__":
     check(oneAway("pales", "pale"), True)
     check(oneAway("pale", "bale"), True)
     check(oneAway("pale", "bake"), False)
+
+    print("Test String Compression")
+    check(stringCompression("aabcccccaaa"), "a2b1c5a3")
+    check(stringCompression("aabccccca"), "a2b1c5a1")
+    check(stringCompression("a"), "a")
+
+    print("Test Rotate Matrix")
