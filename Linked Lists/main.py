@@ -121,9 +121,40 @@ def deleteMiddleNode(list):
     return list.printList()
 
 # Problem 2.4
-def partition():
-    print("partition")
-
+def partition(list, partitionValue):
+    if (list.head == None):
+        return "Error, Empty list"
+    partitionLeftPointer = list.head
+    partitionRightPointer = list.head
+    partitionPointer = list.head
+    #find first two partitioning elements
+    while (partitionLeftPointer.value >= partitionValue):
+        if (partitionLeftPointer.next == None):
+            #do not go any further
+            break
+        partitionLeftPointer = partitionLeftPointer.next 
+    while (partitionRightPointer.value < partitionValue):
+        if (partitionLeftPointer.next == None):
+            #do not go any further
+            break
+        partitionRightPointer = partitionRightPointer.next 
+    newHeadPointer = partitionLeftPointer #keep track of new list head
+    rightPartitionHead = partitionRightPointer
+    while (partitionPointer != None):
+        if (partitionPointer.value < partitionValue):
+            if (partitionPointer != partitionLeftPointer):
+                partitionLeftPointer.next = partitionPointer
+                partitionLeftPointer = partitionPointer
+        else:
+            if (partitionPointer != partitionRightPointer):
+                partitionRightPointer.next = partitionPointer
+                partitionRightPointer = partitionPointer
+        partitionPointer = partitionPointer.next
+    partitionLeftPointer.next = rightPartitionHead #combine two partitions
+    partitionRightPointer.next = None #make sure it stops here
+    partitionedList = LinkedList()
+    partitionedList.head = newHeadPointer
+    return partitionedList.printList()
 if __name__ == "__main__":
     print("Test Remove Dups")
     list = LinkedList()
@@ -166,3 +197,13 @@ if __name__ == "__main__":
     print("delete middle node: ", deleteMiddleNode(list))
 
     print("Test partition")
+    list = LinkedList()
+    list.appendToTail(3)
+    list.appendToTail(5)
+    list.appendToTail(8)
+    list.appendToTail(5)
+    list.appendToTail(10)
+    list.appendToTail(2)
+    list.appendToTail(1)
+    print("current list: ", list.printList())
+    print("partition around 5: ", partition(list, 5))
