@@ -25,7 +25,7 @@ class LinkedList():
                 iterator = iterator.next
             iterator.next = tempNode
 
-    def delete(self, value):
+    def remove(self, value):
         iterator = self.head
         if (self.head.value == value):
             if (self.head.next != None):
@@ -64,13 +64,39 @@ def removeDups(list):
         nodePointer = nodePointer.next
     return list
 
-def kth(list):
+def kth(list, k):
     midPointer = list.head
     runnerPointer = list.head
-    while (runnerPointer.next != None):
+    length = 0
+    #calculate length, midPointer will be in position length/2-1 starting from position 0. 
+    while (runnerPointer != None):
         #by the end midPointer will be in the middle. 
+        if (runnerPointer == None):
+            break
+        elif (runnerPointer.next == None):
+            length+=1
+            break
+        else:
+            length += 2
         midPointer = midPointer.next
         runnerPointer = runnerPointer.next.next
+    midNodePosition = length/2-1
+    finalNodePosition = length-1
+    if (length-1-k < 0):
+        return "Not Possible to find"
+    elif (length-1-k > midNodePosition): 
+        #check if to the right of middle. Iterate right from middle
+        iterations = int(length-1-midNodePosition-k)
+        for i in range(iterations):
+            midPointer = midPointer.next
+        return midPointer.value
+    else:
+        #to the left of middle. Iterate right from head
+        iterations = int(length-1-k)
+        pointerFromHead = list.head
+        for i in range(iterations):
+            pointerFromHead = pointerFromHead.next
+        return pointerFromHead.value
     
 
 if __name__ == "__main__":
@@ -84,4 +110,14 @@ if __name__ == "__main__":
     check(list.printList(), "5->9->3->None")
 
     print("Test return Kth to last")
-
+    check(kth(list, 1), 9) #list from previous test
+    list = LinkedList()
+    list.appendToTail(0)
+    list.appendToTail(1)
+    list.appendToTail(2)
+    list.appendToTail(3)
+    list.appendToTail(4)
+    list.appendToTail(5)
+    list.appendToTail(6)
+    check(kth(list, 2), 4)
+    check(kth(list, 4), 2)
