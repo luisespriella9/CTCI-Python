@@ -181,37 +181,45 @@ if __name__ == "__main__":
     check(isUnique("hello"), False)
     check(isUnique("why"), True)
 
+    print("---------------------------------")
     print("Test checkPermutation")
     check(checkPermutation("aba", "baa"), True)
     check(checkPermutation("abb", "aba"), False)
 
+    print("---------------------------------")
     print("Test URLify")
     check(urlify("Mr John Smith     ", 13), "Mr%20John%20Smith")
 
+    print("---------------------------------")
     print("Test Palindrome Permutation")
     check(palindromePermutation("Tact Coa"), True)
 
+    print("---------------------------------")
     print("Test One Away")
     check(oneAway("pale", "ple"), True)
     check(oneAway("pales", "pale"), True)
     check(oneAway("pale", "bale"), True)
     check(oneAway("pale", "bake"), False)
 
+    print("---------------------------------")
     print("Test String Compression")
     check(stringCompression("aabcccccaaa"), "a2b1c5a3")
     check(stringCompression("aabccccca"), "a2b1c5a1")
     check(stringCompression("a"), "a")
 
+    print("---------------------------------")
     print("Test Rotate Matrix")
     check(rotateMatrix([[1, 2, 3], [4, 5, 6]]), [[4,1], [5,2], [6,3]])
     check(rotateMatrix([[1, 2, 3], [4, 5, 6], [7, 8, 9]]), [[7, 4,1], [8, 5,2], [9, 6,3]])
     check(rotateMatrix([[1]]), [[1]])
     check(rotateMatrix([[1], [2]]), [[2, 1]])
 
+    print("---------------------------------")
     print("Test Zero Matrix")
     check(zeroMatrix([[1], [0]]), [[0], [0]])
     check(zeroMatrix([[1, 2, 3], [4, 5, 6]]), [[1, 2, 3], [4, 5, 6]])
     check(zeroMatrix([[1, 2, 3], [4, 0, 6]]), [[1, 0, 3], [0, 0, 0]])
 
+    print("---------------------------------")
     print("Test String Rotation")
     check(stringRotation("waterbottle","erbottlewat"), True)
