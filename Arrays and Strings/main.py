@@ -124,7 +124,7 @@ def rotateMatrix(matrix):
     if (matrix == []):
         return []
     if (matrix[0] == []):
-        return
+        return []
     rows = len(matrix)
     cols = len(matrix[0])
     rotatedMatrix = []
@@ -141,8 +141,26 @@ def rotateMatrix(matrix):
     return rotatedMatrix
 
 # Problem 1.8
-def zeroMatrix():
-    return ""
+def zeroMatrix(matrix):
+    #base cases
+    if (matrix == []):
+        return []
+    if (matrix[0] == []):
+        return []
+    rows = len(matrix)
+    cols = len(matrix[0])
+    zeroPointsX = []
+    zeroPointsY = []
+    for rowNum in range(rows):
+        for colNum in range(cols):
+            if matrix[rowNum][colNum] == 0:
+                zeroPointsX.append(rowNum) #register x point
+                zeroPointsY.append(colNum) #register y point
+    for rowNum in range(rows):
+        for colNum in range(cols):
+            if (rowNum in zeroPointsX or colNum in zeroPointsY):
+                matrix[rowNum][colNum] = 0
+    return matrix
 
 # Problem 1.9
 def stringRotation(first, second):
@@ -181,6 +199,9 @@ if __name__ == "__main__":
     check(rotateMatrix([[1], [2]]), [[2, 1]])
 
     print("Test Zero Matrix")
+    check(zeroMatrix([[1], [0]]), [[0], [0]])
+    check(zeroMatrix([[1, 2, 3], [4, 5, 6]]), [[1, 2, 3], [4, 5, 6]])
+    check(zeroMatrix([[1, 2, 3], [4, 0, 6]]), [[1, 0, 3], [0, 0, 0]])
 
     print("Test String Rotation")
     check(stringRotation("waterbottle","erbottlewat"), True)
