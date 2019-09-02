@@ -1,17 +1,3 @@
-# Test Remove Dups
-
-Correct
-
----------------------------------
-# Test return Kth to last
-
-Correct
-
-Correct
-
-Correct
-
----------------------------------
 # Test delete middle node
 
 current list:  0->1->2->3->4->5->6->None
