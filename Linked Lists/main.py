@@ -155,6 +155,35 @@ def partition(list, partitionValue):
     partitionedList = LinkedList()
     partitionedList.head = newHeadPointer
     return partitionedList.printList()
+
+# Problem 2.4
+def sumLists(firstList, secondList):
+    firstNodePointer = firstList.head
+    secondNodePointer = secondList.head
+    newSumList = LinkedList()
+    carryValue = 0
+    while (firstNodePointer!=None or secondNodePointer != None): #both must equal none
+        instantSum = 0 #keep track of sum
+        instantSum += carryValue
+        if (firstNodePointer != None):
+            instantSum += firstNodePointer.value
+            firstNodePointer = firstNodePointer.next 
+        if (secondNodePointer != None):
+            instantSum += secondNodePointer.value
+            secondNodePointer = secondNodePointer.next
+        if (instantSum >= 10):
+            carryValue = 1
+            newSumList.appendToTail(instantSum % 10)
+        else: 
+            carryValue = 0
+            newSumList.appendToTail(instantSum)
+    resultAsString = ""
+    newListPointer = newSumList.head
+    while (newListPointer != None):
+        resultAsString = str(newListPointer.value) + resultAsString
+        newListPointer = newListPointer.next
+    return str(newSumList.printList()) + " : " + str(resultAsString)
+
 if __name__ == "__main__":
     print("Test Remove Dups")
     list = LinkedList()
@@ -210,3 +239,34 @@ if __name__ == "__main__":
     list.appendToTail(1)
     print("current list: ", list.printList())
     print("partition around 5: ", partition(list, 5))
+
+    print("---------------------------------")
+    print("Test Sum Lists")
+    list1 = LinkedList()
+    list1.appendToTail(7)
+    list1.appendToTail(1)
+    list1.appendToTail(6)
+    list2 = LinkedList()
+    list2.appendToTail(5)
+    list2.appendToTail(9)
+    list2.appendToTail(2)
+    print("7->1->6")
+    print("+")
+    print("5->9->2")
+    print("=")
+    print(sumLists(list1, list2))
+    print("---------")
+    list1 = LinkedList()
+    list1.appendToTail(2)
+    list1.appendToTail(1)
+    list1.appendToTail(0)
+    list1.appendToTail(1)
+    list2 = LinkedList()
+    list2.appendToTail(5)
+    list2.appendToTail(9)
+    list2.appendToTail(2)
+    print("2->1->0->1")
+    print("+")
+    print("5->9->2")
+    print("=")
+    print(sumLists(list1, list2))
