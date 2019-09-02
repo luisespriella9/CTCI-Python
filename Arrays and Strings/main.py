@@ -163,9 +163,19 @@ def zeroMatrix(matrix):
     return matrix
 
 # Problem 1.9
-def stringRotation(first, second):
-    return ""
+#check if s2 is a rotation of s1
+def stringRotation(s1, s2):
+    for i in range(len(s2)):
+        rotatedString = s2[i:] + s2[:i]
+        if rotatedString == s1:
+            return True
+    return False
 
+#needed for problem 1.9
+def isSubstring(string, sub):
+    if sub in string:
+        return True
+    return False
 if __name__ == "__main__":
     print("Test isUnique")
     check(isUnique("hello"), False)
