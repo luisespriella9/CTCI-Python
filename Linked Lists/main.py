@@ -165,6 +165,7 @@ if __name__ == "__main__":
     removeDups(list)
     check(list.printList(), "5->9->3->None")
 
+    print("---------------------------------")
     print("Test return Kth to last")
     check(kth(list, 1), 9) #list from previous test
     list = LinkedList()
@@ -178,6 +179,7 @@ if __name__ == "__main__":
     check(kth(list, 2), 4)
     check(kth(list, 4), 2)
 
+    print("---------------------------------")
     print("Test delete middle node")
     print("current list: ", list.printList())
     print("delete middle node: ", deleteMiddleNode(list))
@@ -196,6 +198,7 @@ if __name__ == "__main__":
     print("current list: ", list.printList())
     print("delete middle node: ", deleteMiddleNode(list))
 
+    print("---------------------------------")
     print("Test partition")
     list = LinkedList()
     list.appendToTail(3)
