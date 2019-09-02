@@ -43,7 +43,6 @@ partition around 5:  3->2->1->5->8->5->10->None
 #Test Sum Lists
 
 7->1->6
-
 +
 
 5->9->2
