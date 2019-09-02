@@ -98,6 +98,25 @@ def kth(list, k):
             pointerFromHead = pointerFromHead.next
         return pointerFromHead.value
     
+def deleteMiddleNode(list):
+    previousToMidNode = list.head
+    runnerPointer = list.head
+    while (runnerPointer != None):
+        #by the end midPointer will be in the middle. 
+        if (runnerPointer.next == None):
+            break
+        elif(runnerPointer.next.next == None):
+            runnerPointer = runnerPointer.next
+            break
+        if runnerPointer != list.head:
+            #delay by one
+            previousToMidNode = previousToMidNode.next
+        runnerPointer = runnerPointer.next.next
+    if (previousToMidNode != None):
+        if (previousToMidNode.next != None and previousToMidNode.next != runnerPointer):
+            #check if middle node, then remove
+            previousToMidNode.next = previousToMidNode.next.next
+    return list.printList()
 
 if __name__ == "__main__":
     print("Test Remove Dups")
@@ -121,3 +140,19 @@ if __name__ == "__main__":
     list.appendToTail(6)
     check(kth(list, 2), 4)
     check(kth(list, 4), 2)
+
+    print("Test delete middle node")
+    check(deleteMiddleNode(list), "0->1->2->4->5->6->None")
+    check(deleteMiddleNode(list), "0->1->4->5->6->None")
+    check(deleteMiddleNode(list), "0->1->5->6->None")
+    check(deleteMiddleNode(list), "0->5->6->None")
+    check(deleteMiddleNode(list), "0->6->None")
+    check(deleteMiddleNode(list), "0->6->None")
+    list = LinkedList()
+    list.appendToTail("a")
+    list.appendToTail("b")
+    list.appendToTail("c")
+    list.appendToTail("d")
+    list.appendToTail("e")
+    list.appendToTail("f")
+    check(deleteMiddleNode(list), "a->b->d->e->f->None")
