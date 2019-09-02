@@ -119,8 +119,26 @@ def stringCompression(string):
         return string
 
 # Problem 1.7
-def rotateMatrix():
-    return ""
+def rotateMatrix(matrix):
+    #base cases to check there are enough fields to rotate
+    if (matrix == []):
+        return []
+    if (matrix[0] == []):
+        return
+    rows = len(matrix)
+    cols = len(matrix[0])
+    rotatedMatrix = []
+    #create empty matrix to copy the rotated values into
+    for rowNum in range(cols):
+        l = []
+        for colNum in range(rows):
+            l.append(None)
+        rotatedMatrix.append(l)
+    #fill in with rotated values
+    for rowNum in range(rows):
+        for colNum in range(cols):
+            rotatedMatrix[colNum][rowNum] = matrix[rows-1-rowNum][colNum]
+    return rotatedMatrix
 
 # Problem 1.8
 def zeroMatrix():
@@ -157,6 +175,10 @@ if __name__ == "__main__":
     check(stringCompression("a"), "a")
 
     print("Test Rotate Matrix")
+    check(rotateMatrix([[1, 2, 3], [4, 5, 6]]), [[4,1], [5,2], [6,3]])
+    check(rotateMatrix([[1, 2, 3], [4, 5, 6], [7, 8, 9]]), [[7, 4,1], [8, 5,2], [9, 6,3]])
+    check(rotateMatrix([[1]]), [[1]])
+    check(rotateMatrix([[1], [2]]), [[2, 1]])
 
     print("Test Zero Matrix")
 
