@@ -7,7 +7,7 @@
 
 class ListNode():
     value = None
-    nextNode = None
+    next = None
 class LinkedList():
     head = None
     
@@ -21,33 +21,33 @@ class LinkedList():
             self.head = tempNode
         else:
             iterator = self.head
-            while (iterator.nextNode != None):
-                iterator = iterator.nextNode
-            iterator.nextNode = tempNode
+            while (iterator.next != None):
+                iterator = iterator.next
+            iterator.next = tempNode
 
-    def deleteNode(self, value):
+    def delete(self, value):
         iterator = self.head
         if (self.head.value == value):
-            if (self.head.nextNode != None):
-                self.head = self.head.nextNode
+            if (self.head.next != None):
+                self.head = self.head.next
             else:
                 self.head = None
             return
-        while (iterator.nextNode != None):
-            if (iterator.nextNode.value == value):
-                if (iterator.nextNode.nextNode != None):
-                    iterator.nextNode = iterator.nextNode.nextNode
+        while (iterator.next != None):
+            if (iterator.next.value == value):
+                if (iterator.next.next != None):
+                    iterator.next = iterator.next.next
                 else:
-                    iterator.nextNode = None
+                    iterator.next = None
                 break
-            iterator = iterator.nextNode
+            iterator = iterator.next
 
     def printList(self):
         result = ""
         iterator = self.head
         while (iterator != None):
             result += str(iterator.value) + "->"
-            iterator = iterator.nextNode
+            iterator = iterator.next
         result += "None"
         return result
 
@@ -57,12 +57,21 @@ def removeDups(list):
     #pointer to current node and pointer to check rest of the nodes inside the list
     while nodePointer != None:
         nodeRunner = nodePointer
-        while (nodeRunner.nextNode != None):
-            if nodeRunner.nextNode.value == nodePointer.value:
-                nodeRunner.nextNode = nodeRunner.nextNode.nextNode #skip
-            nodeRunner = nodeRunner.nextNode
-        nodePointer = nodePointer.nextNode
+        while (nodeRunner.next != None):
+            if nodeRunner.next.value == nodePointer.value:
+                nodeRunner.next = nodeRunner.next.next #skip
+            nodeRunner = nodeRunner.next
+        nodePointer = nodePointer.next
     return list
+
+def kth(list):
+    midPointer = list.head
+    runnerPointer = list.head
+    while (runnerPointer.next != None):
+        #by the end midPointer will be in the middle. 
+        midPointer = midPointer.next
+        runnerPointer = runnerPointer.next.next
+    
 
 if __name__ == "__main__":
     print("Test Remove Dups")
