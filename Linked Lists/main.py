@@ -184,6 +184,17 @@ def sumLists(firstList, secondList):
         newListPointer = newListPointer.next
     return str(newSumList.printList()) + " : " + str(resultAsString)
 
+# Problem 2.5
+def palindrome(list):
+    nodePointer = list.head
+    valuesAsString = ""
+    reversedValuesAsString = ""
+    while (nodePointer != None):
+        valuesAsString += str(nodePointer.value)
+        reversedValuesAsString = str(nodePointer.value) + reversedValuesAsString
+        nodePointer = nodePointer.next
+    return (valuesAsString == reversedValuesAsString)
+
 if __name__ == "__main__":
     print("Test Remove Dups")
     list = LinkedList()
@@ -270,3 +281,28 @@ if __name__ == "__main__":
     print("5->9->2")
     print("=")
     print(sumLists(list1, list2))
+
+    print("---------------------------------")
+    print("Test Palindrome")
+    list = LinkedList()
+    list.appendToTail("p")
+    list.appendToTail("i")
+    list.appendToTail("p")
+    list.appendToTail("e")
+    check(palindrome(list), False)
+    list = LinkedList()
+    list.appendToTail("k")
+    list.appendToTail("a")
+    list.appendToTail("y")
+    list.appendToTail("a")
+    list.appendToTail("k")
+    check(palindrome(list), True)
+    list = LinkedList()
+    list.appendToTail("r")
+    list.appendToTail("a")
+    list.appendToTail("c")
+    list.appendToTail("e")
+    list.appendToTail("c")
+    list.appendToTail("a")
+    list.appendToTail("r")
+    check(palindrome(list), True)
