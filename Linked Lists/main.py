@@ -218,7 +218,7 @@ def intersection(list1, list2):
         secondListPointer = secondListPointer.next
     return None
 
-#needed for problem 2.6
+#needed for problem 2.7
 def reverse(list):
     reversedList = LinkedList()
     listPointer = list.head
