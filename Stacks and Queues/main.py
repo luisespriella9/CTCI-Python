@@ -9,39 +9,59 @@ class StackNode():
     value = None
     nextNode = None
 
+#problem 3.2 Stack Min -> Stack where push(), pop() and min() all operate in O(1) time
 class Stack():
     top = None
+    min = None
     
     def __init__(self):
         self.top = None
+        self.min = None
     
     def push(self, value):
         temporaryNode = StackNode()
         temporaryNode.value = value
-        
         if (self.top == None):
             self.top = temporaryNode
+            self.min = value
         else:
             temporaryNode.nextNode = self.top
             self.top = temporaryNode
+        if (value < self.min):
+            self.min = value
 
     def pop(self):
         if (self.top != None):
+            topValue = self.top.value
             if (self.top.nextNode != None):
                 self.top = self.top.nextNode
             else:
                 self.top = None
+            if (topValue == self.min):
+                self.updateMin()
 
     def printStack(self):
         iterator = stack.top
-        l = list()
+        resultingStack = "top -> "
         while (iterator != None):
-            l.append(iterator.value)
+            resultingStack += str(iterator.value) + " -> "
             iterator = iterator.nextNode
-        return l
+        resultingStack += "None"
+        return resultingStack
 
     def peak(self):
         return self.top.value
+
+    def updateMin(self):
+        nodePointer = self.top
+        min = None
+        if (nodePointer!= None):
+            min = nodePointer.value
+        while (nodePointer != None):
+            if (min < nodePointer.value):
+                min = nodePointer.value
+        self.min = min
+                
 
 class QueueNode:
     value = None
@@ -95,3 +115,27 @@ class Queue:
             return True
         else:
             return False
+
+if __name__ == "__main__":
+    print("Test Stack min")
+    stack = Stack()
+    print("push 2")
+    stack.push(2)
+    print("Stack: ", stack.printStack())
+    print("min: ", str(stack.min))
+    print("push 3")
+    stack.push(3)
+    print("Stack: ", stack.printStack())
+    print("min: ", str(stack.min))
+    print("push 4")
+    stack.push(4)
+    print("Stack: ", stack.printStack())
+    print("min: ", str(stack.min))
+    print("push 1")
+    stack.push(1)
+    print("Stack: ", stack.printStack())
+    print("min: ", str(stack.min))
+    print("push 5")
+    stack.push(5)
+    print("Stack: ", stack.printStack())
+    print("min: ", str(stack.min))
