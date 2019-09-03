@@ -2,7 +2,7 @@
 
 push 2
 
-Stack:  top -> 2 -> None
+* Stack:  top -> 2 -> None
 
 min:  2
 

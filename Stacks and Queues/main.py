@@ -121,7 +121,7 @@ if __name__ == "__main__":
     stack = Stack()
     print("push 2")
     stack.push(2)
-    print("Stack: ", stack.printStack())
+    print(" * Stack: ", stack.printStack())
     print("min: ", str(stack.min))
     print("push 3")
     stack.push(3)
