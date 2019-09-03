@@ -202,7 +202,7 @@ def palindrome(list):
         nodePointer = nodePointer.next
     return (valuesAsString == reversedValuesAsString)
 
-# Problem 2.6
+# Problem 2.7
 def intersection(list1, list2):
     reversedList1 = reverse(list1)
     reversedList2 = reverse(list2)
@@ -226,6 +226,25 @@ def reverse(list):
         reversedList.addFirst(listPointer.value)
         listPointer = listPointer.next
     return reversedList
+
+# Problem 2.8
+def loopDetection(list):
+    slowPointer = list.head
+    runnerPointer = list.head
+    while (runnerPointer != None and runnerPointer.next != None):
+        slowPointer = slowPointer.next
+        runnerPointer = runnerPointer.next.next
+        if (slowPointer == runnerPointer):
+            break #meeting point
+    if (runnerPointer == None):
+        return None
+    elif (runnerPointer.next == None):
+        return None
+    slowPointer = list.head
+    while (slowPointer != runnerPointer):
+        slowPointer = slowPointer.next
+        runnerPointer = runnerPointer.next
+    return runnerPointer.value
 
 if __name__ == "__main__":
     print("Test Remove Dups")
@@ -357,3 +376,19 @@ if __name__ == "__main__":
     list1.head = nodeOne
     list2.head = nodeFour
     check(intersection(list1, list2), 6)
+
+    print("---------------------------------")
+    print("Test Loop detection")
+    list = LinkedList()
+    nodeA = ListNode("A")
+    nodeB = ListNode("B")
+    nodeC = ListNode("C")
+    nodeD = ListNode("D")
+    nodeE = ListNode("E")    
+    nodeA.next = nodeB
+    nodeB.next = nodeC
+    nodeC.next = nodeD
+    nodeD.next = nodeE
+    nodeE.next = nodeC
+    list.head = nodeA
+    check(loopDetection(list), "C")
