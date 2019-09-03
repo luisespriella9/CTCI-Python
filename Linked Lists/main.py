@@ -8,15 +8,22 @@
 class ListNode():
     value = None
     next = None
+
+    def __init__(self, value):
+        self.value = value
 class LinkedList():
     head = None
     
     def _init_(self):
         self.head = None
 
+    def addFirst(self, value):
+        newHead = ListNode(value)
+        newHead.next = self.head
+        self.head = newHead
+
     def appendToTail(self, value):
-        tempNode = ListNode()
-        tempNode.value = value
+        tempNode = ListNode(value)
         if (self.head == None):
             self.head = tempNode
         else:
@@ -156,7 +163,7 @@ def partition(list, partitionValue):
     partitionedList.head = newHeadPointer
     return partitionedList.printList()
 
-# Problem 2.4
+# Problem 2.5
 def sumLists(firstList, secondList):
     firstNodePointer = firstList.head
     secondNodePointer = secondList.head
@@ -184,7 +191,7 @@ def sumLists(firstList, secondList):
         newListPointer = newListPointer.next
     return str(newSumList.printList()) + " : " + str(resultAsString)
 
-# Problem 2.5
+# Problem 2.6
 def palindrome(list):
     nodePointer = list.head
     valuesAsString = ""
@@ -194,6 +201,31 @@ def palindrome(list):
         reversedValuesAsString = str(nodePointer.value) + reversedValuesAsString
         nodePointer = nodePointer.next
     return (valuesAsString == reversedValuesAsString)
+
+# Problem 2.6
+def intersection(list1, list2):
+    reversedList1 = reverse(list1)
+    reversedList2 = reverse(list2)
+    firstListPointer = reversedList1.head
+    secondListPointer = reversedList2.head
+    matchingNode = None #keep track of latest matching Node
+    while (firstListPointer != None and secondListPointer != None):
+        if (firstListPointer.value == secondListPointer.value):
+            matchingValue = firstListPointer.value
+        else:
+            return matchingValue
+        firstListPointer = firstListPointer.next
+        secondListPointer = secondListPointer.next
+    return None
+
+#needed for problem 2.6
+def reverse(list):
+    reversedList = LinkedList()
+    listPointer = list.head
+    while (listPointer != None):
+        reversedList.addFirst(listPointer.value)
+        listPointer = listPointer.next
+    return reversedList
 
 if __name__ == "__main__":
     print("Test Remove Dups")
@@ -306,3 +338,22 @@ if __name__ == "__main__":
     list.appendToTail("a")
     list.appendToTail("r")
     check(palindrome(list), True)
+
+    print("---------------------------------")
+    print("Test Intersection")
+    list1 = LinkedList()
+    list2 = LinkedList()
+    nodeSeven = ListNode(7)
+    nodeSix = ListNode(6)
+    nodeFive = ListNode(5)
+    nodeFour = ListNode(4)
+    nodeTwo = ListNode(2)
+    nodeOne = ListNode(1)
+    nodeSix.next = nodeSeven
+    nodeTwo.next = nodeSix
+    nodeFive.next = nodeSix
+    nodeOne.next = nodeTwo
+    nodeFour.next = nodeFive
+    list1.head = nodeOne
+    list2.head = nodeFour
+    check(intersection(list1, list2), 6)
