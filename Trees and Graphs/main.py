@@ -130,6 +130,40 @@ class BinarySearchTree:
                 node.right = nodeToInsert
             self.insertRecursively(node.right, nodeToInsert) #traverse right
 
+    
+class ListNode():
+    value = None
+    next = None
+    
+    def __init__(self, value):
+        self.value = value
+
+class LinkedList():
+    head = None
+    
+    def _init_(self):
+        self.head = None
+
+    def appendToTail(self, value):
+        tempNode = ListNode(value)
+        tempNode.value = value
+        if (self.head == None):
+            self.head = tempNode
+        else:
+            iterator = self.head
+            while (iterator.next != None):
+                iterator = iterator.next
+            iterator.next = tempNode
+
+    def printList(self):
+        result = ""
+        iterator = self.head
+        while (iterator != None):
+            result += str(iterator.value) + "->"
+            iterator = iterator.next
+        result += "None"
+        return result
+
 # Problem 4.1
 def routeBetweenNodes(graph, nodeAName, nodeBName):
     #check if route between nodes
@@ -160,11 +194,36 @@ def minimalTree(sortedArray):
 def minimalTreeRecursivelySolve(sortedArray):
     if (len(sortedArray) == 0):
         return None
+    #start from the middle value, follow up with left and right sides
     mid = int(len(sortedArray)/2)
     node = Node(sortedArray[mid])
     node.left =  minimalTreeRecursivelySolve(sortedArray[:mid])
     node.right =  minimalTreeRecursivelySolve(sortedArray[mid+1:])
     return node
+
+# Problem 4.3
+def listOfDepths(bst):
+    if (bst.root == None):
+        return []
+    #breadth first search to iterate throught tree
+    root = bst.root
+    #we will have two queues. One for current depth nodes and the second for children of these nodes. 
+    nodeQueue = Queue()
+    nodeQueue.add(root) #add root of tree to queue
+    allLists = []
+    while (not nodeQueue.isEmpty() or not childrenQueue.isEmpty):
+        depthList = LinkedList()
+        childrenQueue = Queue()
+        while (not nodeQueue.isEmpty()):
+            removedNode = nodeQueue.remove().value
+            depthList.appendToTail(removedNode.value)
+            if (removedNode.left != None):
+                childrenQueue.add(removedNode.left)
+            if (removedNode.right != None):
+                childrenQueue.add(removedNode.right)
+        allLists.append(depthList)
+        nodeQueue = childrenQueue
+    return [list.printList() for list in allLists]
 
 #test useful functions
 
@@ -221,3 +280,16 @@ if __name__ == "__main__":
     bst = minimalTree(sortedArray)
     check(height(bst), 3)
     check(inOrder(bst), "1 2 3 4 5 6 7")
+
+    print("---------------------------------")
+    print("Test List of depths")
+    binaryTree = BinaryTree()
+    binaryTree.insert("I")
+    binaryTree.insert("D")
+    binaryTree.insert("O")
+    binaryTree.insert("L")
+    binaryTree.insert("i")
+    binaryTree.insert("K")
+    binaryTree.insert("E")
+    check([listOfDepths(bst)], [['4->None', '2->6->None', '1->3->5->7->None']])
+    check([listOfDepths(binaryTree)], [['I->None', 'D->O->None', 'L->i->K->E->None']])
