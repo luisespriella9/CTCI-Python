@@ -149,6 +149,50 @@ def routeBetweenNodes(graph, nodeAName, nodeBName):
         return True
     return False
 
+# Problem 4.2
+def minimalTree(sortedArray):
+    #start from middle of array to create a balanced BST
+    bst = BinarySearchTree()
+    bst.root = minimalTreeRecursivelySolve(sortedArray)
+    return bst
+    
+#recursive method to solve problem 4.2
+def minimalTreeRecursivelySolve(sortedArray):
+    if (len(sortedArray) == 0):
+        return None
+    mid = int(len(sortedArray)/2)
+    node = Node(sortedArray[mid])
+    node.left =  minimalTreeRecursivelySolve(sortedArray[:mid])
+    node.right =  minimalTreeRecursivelySolve(sortedArray[mid+1:])
+    return node
+
+#test useful functions
+
+#traverse tree in order, return values in order
+def inOrder(bst):
+    return inOrderRecursively(bst.root, "").strip()
+
+def inOrderRecursively(node, result):
+    if (node == None):
+        return ""
+    #left
+    if (node.left != None):
+        result = inOrderRecursively(node.left, result)
+    #root
+    result += " " + str(node.value)
+    #right
+    if (node.right != None):
+        result = inOrderRecursively(node.right, result)
+    return result
+
+def height(bst):
+    return heightRecursively(bst.root)
+
+def heightRecursively(node):
+    if (node == None):
+        return 0
+    return 1 + max(heightRecursively(node.left), heightRecursively(node.left))
+
 if __name__ == "__main__":
     print("Test Route Between Nodes")
     #lets build a graph
@@ -170,3 +214,10 @@ if __name__ == "__main__":
     check(routeBetweenNodes(graph, "C", "A"), False)
     check(routeBetweenNodes(graph, "D", "E"), False)
     check(routeBetweenNodes(graph, "B", "A"), True)
+
+    print("---------------------------------")
+    print("Test Minimal Tree by checking height and inorder result")
+    sortedArray = [i for i in range(1, 8)]
+    bst = minimalTree(sortedArray)
+    check(height(bst), 3)
+    check(inOrder(bst), "1 2 3 4 5 6 7")
