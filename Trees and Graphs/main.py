@@ -117,17 +117,20 @@ class BinarySearchTree:
         if (self.root == None):
             self.root = nodeToInsert
             return
+        self.insertRecursively(self.root, nodeToInsert)
     
     def insertRecursively(self, node, nodeToInsert):
         if (nodeToInsert.value < node.value):
             #insert left
             if (node.left == None):
                 node.left = nodeToInsert
+                return
             self.insertRecursively(node.left, nodeToInsert) #traverse left
         else:
             #insert right
             if (node.right == None):
                 node.right = nodeToInsert
+                return
             self.insertRecursively(node.right, nodeToInsert) #traverse right
 
     
@@ -202,11 +205,11 @@ def minimalTreeRecursivelySolve(sortedArray):
     return node
 
 # Problem 4.3
-def listOfDepths(bst):
+def listOfDepths(binaryTree):
     if (bst.root == None):
         return []
     #breadth first search to iterate throught tree
-    root = bst.root
+    root = binaryTree.root
     #we will have two queues. One for current depth nodes and the second for children of these nodes. 
     nodeQueue = Queue()
     nodeQueue.add(root) #add root of tree to queue
@@ -224,6 +227,20 @@ def listOfDepths(bst):
         allLists.append(depthList)
         nodeQueue = childrenQueue
     return [list.printList() for list in allLists]
+
+# Problem 4.4
+def checkBalanced(binaryTree):
+    #check if binary tree is balanced
+    return checkBalancedRecursively(binaryTree.root)
+
+def checkBalancedRecursively(node):
+    if (node == None):
+        return
+    if (abs(heightRecursively(node.left)-heightRecursively(node.right))>1):
+        return False
+    if (checkBalancedRecursively(node.left) == False or checkBalancedRecursively(node.right) == False):
+        return False
+    return True
 
 #test useful functions
 
@@ -250,7 +267,9 @@ def height(bst):
 def heightRecursively(node):
     if (node == None):
         return 0
-    return 1 + max(heightRecursively(node.left), heightRecursively(node.left))
+    leftHeight = heightRecursively(node.left)
+    rightHeight = heightRecursively(node.right)
+    return 1 + max(leftHeight, rightHeight)
 
 if __name__ == "__main__":
     print("Test Route Between Nodes")
@@ -293,3 +312,12 @@ if __name__ == "__main__":
     binaryTree.insert("E")
     check([listOfDepths(bst)], [['4->None', '2->6->None', '1->3->5->7->None']])
     check([listOfDepths(binaryTree)], [['I->None', 'D->O->None', 'L->i->K->E->None']])
+
+    check(checkBalanced(binaryTree), True)
+    check(checkBalanced(bst), True)
+    binarySearchTree = BinarySearchTree()
+    binarySearchTree.insert(5)
+    binarySearchTree.insert(6)
+    binarySearchTree.insert(7)
+    binarySearchTree.insert(8)
+    check(checkBalanced(binarySearchTree), False)
