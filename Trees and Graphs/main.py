@@ -1,8 +1,17 @@
-﻿class GraphNode:
+﻿def check(result, actualResult):
+    #this is to check whether the answer is correct to the result we are expecting
+    if result == actualResult:
+        print("Correct")
+    else:
+        print("Issue Found")
+
+class GraphNode:
     name = ""
-    children = []
+    children = None
+
     def __init__(self, name):
         self.name = name
+        self.children = [];
 
     def addEdge(self, child):
         self.children.append(child)
@@ -12,14 +21,14 @@ class Graph:
     nodes = []
 
     def addNode(self, name):
-        graphNode = graphNode(name)
+        graphNode = GraphNode(name)
         self.nodes.append(graphNode)
 
     def addEdge(self, pointingNodeName, pointerNodeName):
         #find two nodes if they exists, if not then do nothing
         pointerNode = None
         pointingNode = None
-        for node in nodes:
+        for node in self.nodes:
             if (node.name == pointingNodeName):
                 pointingNode = node
             if (node.name == pointerNodeName):
@@ -50,10 +59,6 @@ class Queue:
         if (self.front == None and self.back == None):
             self.front = temporaryNode
             self.back = temporaryNode
-            '''
-                prev for both of these will point to none
-                so front and back will point to the same unti another one is added and will take the place of the back
-                '''
         else:
             self.back.prev  = temporaryNode
             self.back = temporaryNode
@@ -130,7 +135,7 @@ def routeBetweenNodes(graph, nodeAName, nodeBName):
     #check if route between nodes
     nodeA = None
     nodeB = None
-    for node in nodes:
+    for node in graph.nodes:
         if (node.name == nodeAName):
             nodeA = node
         if (node.name == nodeBName):
@@ -146,3 +151,22 @@ def routeBetweenNodes(graph, nodeAName, nodeBName):
 
 if __name__ == "__main__":
     print("Test Route Between Nodes")
+    #lets build a graph
+    graph = Graph()
+    graph.addNode("A")
+    graph.addNode("B")
+    graph.addNode("C")
+    graph.addNode("D")
+    graph.addNode("E")
+    graph.addEdge("E", "A")
+    graph.addEdge("A", "B")
+    graph.addEdge("B", "C")
+    graph.addEdge("B", "D")
+    graph.addEdge("C", "D")
+    check(routeBetweenNodes(graph, "E", "A"), True)
+    check(routeBetweenNodes(graph, "E", "B"), False)
+    check(routeBetweenNodes(graph, "B", "D"), True)
+    check(routeBetweenNodes(graph, "D", "C"), True)
+    check(routeBetweenNodes(graph, "C", "A"), False)
+    check(routeBetweenNodes(graph, "D", "E"), False)
+    check(routeBetweenNodes(graph, "B", "A"), True)
