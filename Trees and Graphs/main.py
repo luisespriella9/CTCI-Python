@@ -233,6 +233,7 @@ def checkBalanced(binaryTree):
     #check if binary tree is balanced
     return checkBalancedRecursively(binaryTree.root)
 
+# Needed for problem 4.5. recursively check balance for each node
 def checkBalancedRecursively(node):
     if (node == None):
         return
@@ -241,6 +242,30 @@ def checkBalancedRecursively(node):
     if (checkBalancedRecursively(node.left) == False or checkBalancedRecursively(node.right) == False):
         return False
     return True
+
+# Problem 4.5
+def validateBst(binaryTree):
+    #validate if Binary tree is Binary search tree
+    return validateBstRecursively(binaryTree.root, None, None)
+
+# Needed for problem 4.5. recursively solve validate BST
+def validateBstRecursively(node, min, max):
+    if (node == None):
+        return True
+    if (min != None and max != None):
+        #check that number is in between min and max
+        if (node.value < min or node.value > max):
+            return False
+    elif (min != None and max == None):
+        #check that number is greater than min
+        if (node.value < min):
+            return False
+    elif (min == None and max != None):
+        #check that number is less than max
+        if (node.value > max):
+            return False
+    return (validateBstRecursively(node.left, min, node.value) and validateBstRecursively(node.right, node.value, max))
+
 
 #test useful functions
 
@@ -312,7 +337,6 @@ if __name__ == "__main__":
     binaryTree.insert("E")
     check([listOfDepths(bst)], [['4->None', '2->6->None', '1->3->5->7->None']])
     check([listOfDepths(binaryTree)], [['I->None', 'D->O->None', 'L->i->K->E->None']])
-
     check(checkBalanced(binaryTree), True)
     check(checkBalanced(bst), True)
     binarySearchTree = BinarySearchTree()
@@ -321,3 +345,16 @@ if __name__ == "__main__":
     binarySearchTree.insert(7)
     binarySearchTree.insert(8)
     check(checkBalanced(binarySearchTree), False)
+
+    print("---------------------------------")
+    print("Test Validate Bst")
+    check(validateBst(bst), True)
+    binaryTree = BinaryTree()
+    binaryTree.insert(5)
+    binaryTree.insert(2)
+    binaryTree.insert(8)
+    binaryTree.insert(1)
+    binaryTree.insert(6)
+    binaryTree.insert(7)
+    binaryTree.insert(9)
+    check(validateBst(binaryTree), False)
