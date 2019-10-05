@@ -40,9 +40,9 @@ def groupAnagrams(list):
         output.append(anagramGroup)
     return output
 
-#problem 10.2
+#problem 10.3
 def searchRotated(array, target):
-    return searchSortedIter(array, target, 0, len(array)-1)
+    return searchRotatedIter(array, target, 0, len(array)-1)
 
 def searchRotatedIter(array, target, leftIndex, rightIndex):
     if (rightIndex-leftIndex < 0): 
@@ -60,13 +60,48 @@ def searchRotatedIter(array, target, leftIndex, rightIndex):
             #in right side, seach in sorted array
             return binarySearch(array, target, midIndex, rightIndex)
         else:
-            return searchSortedIter(array, target, leftIndex, midIndex-1)
+            return searchRotatedIter(array, target, leftIndex, midIndex-1)
     else:
         if ((target < midVal) and (target > lastVal)):
             #in left side, search in sorted array
             return binarySearch(array, target, leftIndex, midIndex)
         else:
-            return searchSortedIter(array, target, leftIndex+1, rightIndex)
+            return searchRotatedIter(array, target, leftIndex+1, rightIndex)
+
+#problem 10.5
+def sparseSearch(array, target):
+    return sparseSearchIter(array, target, 0, len(array)-1)
+    
+def sparseSearchIter(array, target, leftIndex, rightIndex):
+    if ((rightIndex-leftIndex) < 0):
+        return None
+    midIndex = int((leftIndex+rightIndex)/2)
+    midNonNullIndex = getClosestNonNull(array, midIndex)
+    if (array[midNonNullIndex] == target):
+        return midNonNullIndex
+    if (target > array[midNonNullIndex]):
+        #go right
+        return sparseSearchIter(array, target, midIndex+1, rightIndex)
+    else:
+        #go left
+        return sparseSearchIter(array, target, leftIndex, midIndex-1)
+
+def getClosestNonNull(array, index):
+    if (array[index] != ""):
+        return index
+    leftPointer = index-1
+    rightPointer = index+1
+    while (leftPointer >=0 or rightPointer < len(array)):
+        #while both pointers inside length of array
+        if (leftPointer >= 0):
+            if (array[leftPointer] != ""):
+                return leftPointer
+            leftPointer -= 1 
+        if (rightPointer < len(array)):
+            if (array[rightPointer] != ""):
+                return rightPointer
+            rightPointer+=1
+
 
 #helpful functions
 def binarySearch(array, target):
@@ -144,3 +179,11 @@ if __name__ == "__main__":
     check(searchRotated(testArray4, 1), 0)
     check(searchRotated(testArray4, 2), 1)
     check(searchRotated(testArray5, 1), 0)
+
+    print("---------------------------------")
+    print("Test Sparse Search")
+    testArray = ["at", "", "", "", "ball", "", "", "car", "", "", "dad", "", ""]
+    check(sparseSearch(testArray, "at"), 0)
+    check(sparseSearch(testArray, "ball"), 4)
+    check(sparseSearch(testArray, "car"), 7)
+    check(sparseSearch(testArray, "dad"), 10)
