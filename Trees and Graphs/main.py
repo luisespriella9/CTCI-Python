@@ -358,6 +358,10 @@ def firstCommonAncestorRecursive(currentNode, nodeA, nodeB):
         return firstCommonAncestorRecursive(currentNode.right, nodeA, nodeB)
     return currentNode.value
 
+# Problem 4.9
+def bstSequences(bst):
+
+
 #test useful functions
 
 #traverse tree in order, return values in order
