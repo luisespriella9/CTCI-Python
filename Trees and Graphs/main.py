@@ -5,9 +5,17 @@
     else:
         print("Issue Found")
 
+def check2(result, list):
+    #this is to check whether the answer is correct to the result we are expecting
+    for x in list:
+        if (result == x):
+            print("Correct")
+            return None
+    print("Issue Found")
+
 class GraphNode:
     name = ""
-    children = None
+    children = []
 
     def __init__(self, name):
         self.name = name
@@ -19,6 +27,9 @@ class GraphNode:
 class Graph:
     #implementation of directed graph
     nodes = []
+
+    def __init__(self):
+        self.nodes = []
 
     def addNode(self, name):
         graphNode = GraphNode(name)
@@ -38,6 +49,24 @@ class Graph:
         #add edge from pointing node to the pointer node
         pointingNode.addEdge(pointerNode)
 
+    def removeNode(self, name):
+        pointer = 0
+        #remove node
+        for i in range(len(self.nodes)):
+            if (self.nodes[i].name == name):
+                pointer = i
+        #remove value from other nodes
+        for i in range(len(self.nodes)):
+            for c in range(len(self.nodes[i].children)):
+                if (name == self.nodes[i].children[c].name):
+                    del self.nodes[i].children[c]
+                    break
+        del self.nodes[pointer]
+
+    def print(self):
+        nodes = []
+        for node in self.nodes:
+            print("node " + str(node.name) + " : ", [x.name for x in node.children])
 class QueueNode:
     value = None
     prev = None
@@ -126,7 +155,7 @@ class BinarySearchTree:
                 node.left = nodeToInsert
                 return
             self.insertRecursively(node.left, nodeToInsert) #traverse left
-        else:
+        elif (nodeToInsert.value > node.value):
             #insert right
             if (node.right == None):
                 node.right = nodeToInsert
@@ -266,7 +295,55 @@ def validateBstRecursively(node, min, max):
             return False
     return (validateBstRecursively(node.left, min, node.value) and validateBstRecursively(node.right, node.value, max))
 
+# Problem 4.6
+def successor(binarySearchTree, nodeValue):
+    if (binarySearchTree.root == None):
+        return None
+    elif (binarySearchTree.root.value == nodeValue):
+        return getMin(binarySearchTree.root.right)
+    return successorRecursive(binarySearchTree.root, nodeValue, True, binarySearchTree.root)
 
+def successorRecursive(curNode, targetNodeValue, left, parent):
+    if (curNode == None):
+        return None
+    if (curNode.value == targetNodeValue):
+        if (left == True):
+            if (curNode.right == None):
+                return parent.value
+            return getMin(curNode.right)
+        else:
+            return getMin(curNode.right)
+    elif (curNode.value < targetNodeValue):
+        return successorRecursive(curNode.right, targetNodeValue, False, curNode)
+    else:
+        return successorRecursive(curNode.left, targetNodeValue, True, curNode)
+    
+
+#needed for problem 4.6
+def getMin(node):
+    if (node == None):
+        return None
+    if (node.left == None):
+        return node.value
+    return getMin(node.left)
+
+# Problem 4.7
+def buildOrder(projects, dependencies):
+    graph = Graph()
+    for project in projects:
+        graph.addNode(project)
+    for dependency in dependencies:
+        if (len(dependency) < 2):
+            return "ohh noo"
+        #dependency is tuple where the second item is dependent on the first
+        graph.addEdge(dependency[1], dependency[0])
+    output = []
+    while (len(graph.nodes)>0):
+        for node in graph.nodes:
+            if (len(node.children) == 0):
+                output.append(node.name)
+                graph.removeNode(node.name)
+    return output
 #test useful functions
 
 #traverse tree in order, return values in order
@@ -358,3 +435,19 @@ if __name__ == "__main__":
     binaryTree.insert(7)
     binaryTree.insert(9)
     check(validateBst(binaryTree), False)
+
+    print("---------------------------------")
+    print("Test Successor")
+    print(successor(bst, 1))
+    print(successor(bst, 2))
+    print(successor(bst, 3))
+    print(successor(bst, 4))
+    print(successor(bst, 5))
+    print(successor(bst, 6))
+    print(successor(bst, 7))
+
+    print("---------------------------------")
+    print("Test Build Order")
+    projects = ['a', 'b', 'c', 'd', 'e', 'f']
+    dependencies = [('a', 'd'), ('f', 'b'), ('b', 'd'), ('f', 'a'), ('d', 'c')]
+    check2(buildOrder(projects, dependencies), [['f', 'e', 'a', 'b', 'd', 'c'], ['e', 'f', 'a', 'b', 'd', 'c'], ['f', 'e', 'b', 'a', 'd', 'c'], ['e', 'f', 'b', 'a', 'd', 'c']])
