@@ -120,7 +120,7 @@ if __name__ == "__main__":
     check(groupAnagrams(list), [['eat', 'tea', 'ate'], ['tan', 'nat'], ['bat']])
 
     print("---------------------------------")
-    print("Test Search in Sorted Array")
+    print("Test Search in Rotated Array")
     testArray = [15, 16, 19, 20, 25, 1 , 3, 4, 5, 7, 10, 14]
     testArray2 = [15, 16, 19, 20, 25, 27 , 3, 4, 5, 7, 10, 14]
     testArray3 = [1, 2, 5]
