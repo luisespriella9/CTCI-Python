@@ -23,6 +23,23 @@ def sortedMerge(arrayA, arrayB):
         pointerA += 1
     return arrayA
 
+#problem 10.2
+def groupAnagrams(list):
+    anagramDict = {}
+    sortedChecker = []
+    for item in list:
+        s_item = ""
+        for c in sorted(item):
+            s_item += c
+        if (s_item in anagramDict):
+            anagramDict[s_item].append(item)
+        else:
+            anagramDict[s_item] = [item]
+    output = []
+    for anagramGroup in anagramDict.values():
+        output.append(anagramGroup)
+    return output
+
 if __name__ == "__main__":
     print("Test Sorted Merge")
     arrayA = [1, 5, 7, 9, 10, 12]
@@ -40,3 +57,8 @@ if __name__ == "__main__":
     arrayA = []
     arrayB = []
     check(sortedMerge(arrayA, arrayB), []) #both are empty -> return either
+
+    print("---------------------------------")
+    print("Test Group Anagrams")
+    list = ["eat", "tea", "tan", "ate", "nat", "bat"]
+    check(groupAnagrams(list), [['eat', 'tea', 'ate'], ['tan', 'nat'], ['bat']])
