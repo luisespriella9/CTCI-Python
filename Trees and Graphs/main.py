@@ -344,6 +344,20 @@ def buildOrder(projects, dependencies):
                 output.append(node.name)
                 graph.removeNode(node.name)
     return output
+
+# Problem 4.8
+def firstCommonAncestor(bt, nodeA, nodeB):
+    return firstCommonAncestorRecursive(bt.root, nodeA, nodeB)
+
+def firstCommonAncestorRecursive(currentNode, nodeA, nodeB):
+    left = isChild(currentNode.left, nodeA) and isChild(currentNode.left, nodeB)
+    right = isChild(currentNode.right, nodeA) and isChild(currentNode.right, nodeB)
+    if (left and not right):
+        return firstCommonAncestorRecursive(currentNode.left, nodeA, nodeB)
+    elif (right and not left):
+        return firstCommonAncestorRecursive(currentNode.right, nodeA, nodeB)
+    return currentNode.value
+
 #test useful functions
 
 #traverse tree in order, return values in order
@@ -372,6 +386,13 @@ def heightRecursively(node):
     leftHeight = heightRecursively(node.left)
     rightHeight = heightRecursively(node.right)
     return 1 + max(leftHeight, rightHeight)
+
+def isChild(root, nodeVal):
+    if (root == None):
+        return False
+    if (root.value == nodeVal):
+        return True
+    return isChild(root.left, nodeVal) or isChild(root.right, nodeVal)
 
 if __name__ == "__main__":
     print("Test Route Between Nodes")
@@ -451,3 +472,26 @@ if __name__ == "__main__":
     projects = ['a', 'b', 'c', 'd', 'e', 'f']
     dependencies = [('a', 'd'), ('f', 'b'), ('b', 'd'), ('f', 'a'), ('d', 'c')]
     check2(buildOrder(projects, dependencies), [['f', 'e', 'a', 'b', 'd', 'c'], ['e', 'f', 'a', 'b', 'd', 'c'], ['f', 'e', 'b', 'a', 'd', 'c'], ['e', 'f', 'b', 'a', 'd', 'c']])
+
+    print("---------------------------------")
+    print("Test First Common Ancestor")
+    binaryTree = BinaryTree()
+    binaryTree.insert('A')
+    binaryTree.insert('B')
+    binaryTree.insert('C')
+    binaryTree.insert('D')
+    binaryTree.insert('E')
+    binaryTree.insert('F')
+    binaryTree.insert('G')
+    binaryTree.insert('H')
+    binaryTree.insert('I')
+    binaryTree.insert('J')
+    binaryTree.insert('K')
+    binaryTree.insert('L')
+    binaryTree.insert('M')
+    binaryTree.insert('N')
+    binaryTree.insert('O')
+    check(firstCommonAncestor(binaryTree, 'D', 'F'), 'A')
+    check(firstCommonAncestor(binaryTree, 'I', 'K'), 'B')
+    check(firstCommonAncestor(binaryTree, 'N', 'O'), 'G')
+    check(firstCommonAncestor(binaryTree, 'M', 'N'), 'C')
