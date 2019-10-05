@@ -5,6 +5,45 @@
     else:
         print("Issue Found")
 
+#classes needed for the following problems
+class ListNode():
+    value = None
+    next = None
+    
+    def __init__(self, value):
+        self.value = value
+
+class LinkedList():
+    head = None
+    
+    def appendToTail(self, value):
+        tempNode = ListNode(value)
+        tempNode.value = value
+        if (self.head == None):
+            self.head = tempNode
+        else:
+            iterator = self.head
+            while (iterator.next != None):
+                iterator = iterator.next
+            iterator.next = tempNode
+
+class HashTable():
+    arr = []
+    def __init__(self, size):
+        self.arr = [None]*size
+        for i in range(len(self.arr)):
+            l = LinkedList()
+            self.arr[i] = l
+
+    def hashf(self, value):
+        return value
+
+    def insert(self, value):
+        key = self.hashf(value)
+        l = self.arr[key]
+        l.appendToTail(value)
+    
+
 #problem 10.1
 def sortedMerge(arrayA, arrayB):
     if (len(arrayB) == 0):
@@ -44,6 +83,7 @@ def groupAnagrams(list):
 def searchRotated(array, target):
     return searchRotatedIter(array, target, 0, len(array)-1)
 
+#helper for problem 10.3
 def searchRotatedIter(array, target, leftIndex, rightIndex):
     if (rightIndex-leftIndex < 0): 
         #if length == 0
@@ -72,6 +112,7 @@ def searchRotatedIter(array, target, leftIndex, rightIndex):
 def sparseSearch(array, target):
     return sparseSearchIter(array, target, 0, len(array)-1)
     
+#helper for problem 10.5
 def sparseSearchIter(array, target, leftIndex, rightIndex):
     if ((rightIndex-leftIndex) < 0):
         return None
@@ -86,6 +127,7 @@ def sparseSearchIter(array, target, leftIndex, rightIndex):
         #go left
         return sparseSearchIter(array, target, leftIndex, midIndex-1)
 
+#helper for problem 10.5
 def getClosestNonNull(array, index):
     if (array[index] != ""):
         return index
@@ -102,6 +144,19 @@ def getClosestNonNull(array, index):
                 return rightPointer
             rightPointer+=1
 
+#problem 10.8
+def findDups(array):
+    hTable = HashTable(max(array)+1)
+    dups = []
+    for item in array:
+        hTable.insert(item)
+    for linkedList in hTable.arr:
+        if (linkedList.head == None):
+            continue
+        if (linkedList.head.next != None):
+            dups.append(linkedList.head.value)
+    return dups
+    
 
 #helpful functions
 def binarySearch(array, target):
@@ -187,3 +242,8 @@ if __name__ == "__main__":
     check(sparseSearch(testArray, "ball"), 4)
     check(sparseSearch(testArray, "car"), 7)
     check(sparseSearch(testArray, "dad"), 10)
+
+    print("---------------------------------")
+    print("Test Find Duplicates")
+    testArray = [1,2,3,2,3,3,3,3,5,8,9,82,90,1]
+    check(findDups(testArray), [1,2,3])
