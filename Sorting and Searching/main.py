@@ -87,7 +87,7 @@ def searchRotated(array, target):
 def searchRotatedIter(array, target, leftIndex, rightIndex):
     if (rightIndex-leftIndex < 0): 
         #if length == 0
-        return None
+        return -1
     midIndex = int((leftIndex+rightIndex)/2)
     midVal = array[midIndex]
     if (midVal == target):
@@ -107,6 +107,7 @@ def searchRotatedIter(array, target, leftIndex, rightIndex):
             return binarySearch(array, target, leftIndex, midIndex)
         else:
             return searchRotatedIter(array, target, leftIndex+1, rightIndex)
+    return -1 #if not found
 
 #problem 10.5
 def sparseSearch(array, target):
@@ -157,7 +158,20 @@ def findDups(array):
             dups.append(linkedList.head.value)
     return dups
     
-
+#problem 10.9
+def sortedMatrixSearch(matrix, target):
+    if (len(matrix) == 0):
+        return False
+    if (len(matrix[0]) == 0):
+        return False
+    for row in matrix:
+        if ((target <= row[-1]) and (target >= row[0])):
+            #if in between
+            if (binarySearch(row, target, 0, len(row))) != -1:
+                return True
+            return False
+    return False
+        
 #helpful functions
 def binarySearch(array, target):
     leftIndex = 0
@@ -171,7 +185,7 @@ def binarySearch(array, target):
             rightIndex = midIndex - 1
         else:
             leftIndex = midIndex + 1
-    return None
+    return -1 #if not found
 
 #override
 def binarySearch(array, target, leftIndex, rightIndex):
@@ -184,7 +198,7 @@ def binarySearch(array, target, leftIndex, rightIndex):
             rightIndex = midIndex - 1
         else:
             leftIndex = midIndex + 1
-    return None
+    return -1
 
 if __name__ == "__main__":
     print("Test Sorted Merge")
@@ -247,3 +261,12 @@ if __name__ == "__main__":
     print("Test Find Duplicates")
     testArray = [1,2,3,2,3,3,3,3,5,8,9,82,90,1]
     check(findDups(testArray), [1,2,3])
+
+    print("---------------------------------")
+    print("Test Sorted Matrix Search")
+    testMatrix = [
+    [1,   3,  5,  7],
+    [10, 11, 16, 20],
+    [23, 30, 34, 50]
+    ]
+    check(sortedMatrixSearch(testMatrix, 3), True)
