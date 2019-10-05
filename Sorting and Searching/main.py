@@ -41,10 +41,10 @@ def groupAnagrams(list):
     return output
 
 #problem 10.2
-def searchSorted(array, target):
+def searchRotated(array, target):
     return searchSortedIter(array, target, 0, len(array)-1)
 
-def searchSortedIter(array, target, leftIndex, rightIndex):
+def searchRotatedIter(array, target, leftIndex, rightIndex):
     if (rightIndex-leftIndex < 0): 
         #if length == 0
         return None
@@ -126,21 +126,21 @@ if __name__ == "__main__":
     testArray3 = [1, 2, 5]
     testArray4 = [1, 2]
     testArray5 = [1]
-    check(searchSorted(testArray, 15), 0)
-    check(searchSorted(testArray, 16), 1)
-    check(searchSorted(testArray, 25), 4)
-    check(searchSorted(testArray, 1), 5)
-    check(searchSorted(testArray, 5), 8)
-    check(searchSorted(testArray, 14), 11)
-    check(searchSorted(testArray2, 15), 0)
-    check(searchSorted(testArray2, 16), 1)
-    check(searchSorted(testArray2, 25), 4)
-    check(searchSorted(testArray2, 3), 6)
-    check(searchSorted(testArray2, 5), 8)
-    check(searchSorted(testArray2, 14), 11)
-    check(searchSorted(testArray3, 1), 0)
-    check(searchSorted(testArray3, 2), 1)
-    check(searchSorted(testArray3, 5), 2)
-    check(searchSorted(testArray4, 1), 0)
-    check(searchSorted(testArray4, 2), 1)
-    check(searchSorted(testArray5, 1), 0)
+    check(searchRotated(testArray, 15), 0)
+    check(searchRotated(testArray, 16), 1)
+    check(searchRotated(testArray, 25), 4)
+    check(searchRotated(testArray, 1), 5)
+    check(searchRotated(testArray, 5), 8)
+    check(searchRotated(testArray, 14), 11)
+    check(searchRotated(testArray2, 15), 0)
+    check(searchRotated(testArray2, 16), 1)
+    check(searchRotated(testArray2, 25), 4)
+    check(searchRotated(testArray2, 3), 6)
+    check(searchRotated(testArray2, 5), 8)
+    check(searchRotated(testArray2, 14), 11)
+    check(searchRotated(testArray3, 1), 0)
+    check(searchRotated(testArray3, 2), 1)
+    check(searchRotated(testArray3, 5), 2)
+    check(searchRotated(testArray4, 1), 0)
+    check(searchRotated(testArray4, 2), 1)
+    check(searchRotated(testArray5, 1), 0)
