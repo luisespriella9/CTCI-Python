@@ -382,6 +382,7 @@ def bstSequences(bst):
         parentQueue = childrenQueue
     return allPerms
 
+#helper for problem 4.9
 def permList(list):
     #return all permutations of list
     if (len(list)==0):
@@ -396,6 +397,7 @@ def permList(list):
             allPerms.append([current]+perm)
     return allPerms
 
+#helper for problem 4.9
 def concat(list1, list2):
     #print("list1: ", list1)
     #print("list2: ", list2)
@@ -409,6 +411,17 @@ def concat(list1, list2):
             allPerms.append(p1+p2)
     return allPerms
 
+# Problem 4.10
+def checkSubtree(bt1, bt2):
+    return checkSubtreeRecursive(bt1.root, bt2.root)
+    
+#helper for problem 4.10
+def checkSubtreeRecursive(nodeA, nodeB):
+    if ((nodeA == None) or (nodeB == None)):
+        return False
+    if (nodeA.value == nodeB.value):
+        return equal(nodeA, nodeB)
+    return (checkSubtreeRecursive(nodeA.left, nodeB) or checkSubtreeRecursive(nodeA.right, nodeB))
 #test useful functions
 
 #traverse tree in order, return values in order
@@ -444,6 +457,16 @@ def isChild(root, nodeVal):
     if (root.value == nodeVal):
         return True
     return isChild(root.left, nodeVal) or isChild(root.right, nodeVal)
+
+def equal(nodeA, nodeB):
+    if ((nodeA == None) or (nodeB == None)):
+        if ((nodeA != None) or (nodeB != None)):
+            #if either is None but not both then not equal
+            return False
+        return True #both None
+    if (nodeA.value != nodeB.value):
+        return False
+    return (equal(nodeA.left, nodeB.left) and equal(nodeA.right, nodeB.right))
 
 if __name__ == "__main__":
     print("Test Route Between Nodes")
@@ -577,3 +600,19 @@ if __name__ == "__main__":
     check(len(bstSequences(bst2)), 12)
     bst2.insert(7)
     check(len(bstSequences(bst2)), 48)
+
+    print("---------------------------------")
+    print("Test Check Subtree")
+    binaryTree = BinaryTree()
+    binaryTree.insert(3)
+    binaryTree.insert(5)
+    binaryTree.insert(1)
+    binaryTree.insert(6)
+    binaryTree.insert(2)
+    binaryTree.insert(0)
+    binaryTree.insert(8)
+    subTree = BinaryTree()
+    subTree.insert(5)
+    subTree.insert(6)
+    subTree.insert(2)
+    check(checkSubtree(binaryTree, subTree), True)
