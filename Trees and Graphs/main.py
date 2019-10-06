@@ -112,6 +112,8 @@ class Queue:
         else:
             return False
 
+
+
 class Node():
     value = None
     left = None
@@ -123,6 +125,13 @@ class BinaryTree:
     root = None
 
     def insert(self, value):
+        if type(value) == type([]):
+            for val in value:
+                self.insertHelper(val)
+        else:
+                self.insertHelper(value)
+
+    def insertHelper(self, value):
         nodeToInsert = Node(value)
         if (self.root == None):
             self.root = nodeToInsert
@@ -140,10 +149,34 @@ class BinaryTree:
             nodeQueue.add(node.left)
             nodeQueue.add(node.right)
 
+    def getNodes(self):
+        nodesList = []
+        parentQueue = Queue()
+        childrenQueue = Queue()
+        parentQueue.add(self.root)
+        while ((not parentQueue.isEmpty()) and (childrenQueue.isEmpty())):
+            while (not parentQueue.isEmpty()):
+                currentNode = parentQueue.remove().value
+                nodesList.append(currentNode)
+                if (currentNode.left != None):
+                    childrenQueue.add(currentNode.left)
+                if (currentNode.right != None):
+                    childrenQueue.add(currentNode.right)
+            parentQueue = childrenQueue
+            childrenQueue = Queue()
+        return nodesList
+
 class BinarySearchTree:
     root = None
 
     def insert(self, value):
+        if type(value) == type([]):
+            for val in value:
+                self.insertHelper(val)
+        else:
+                self.insertHelper(value)
+
+    def insertHelper(self, value):
         nodeToInsert = Node(value)
         if (self.root == None):
             self.root = nodeToInsert
@@ -432,6 +465,7 @@ def randomNode(bt):
         return
     return randomNodeRecursive(bt.root)
     
+#helper for problem 4.11
 def randomNodeRecursive(node):
     nodeSize = size(node)
     leftSize = size(node.left)
@@ -443,6 +477,25 @@ def randomNodeRecursive(node):
         return randomNodeRecursive(node.left)
     else:
         return randomNodeRecursive(node.right)
+
+# Problem 4.12
+def pathsWithSum(bt, target):
+    totalPaths = 0
+    allNodes = bt.getNodes()
+    for node in allNodes:
+        totalPaths += pathsWithSumRecursive(node, target, 0, totalPaths)
+    return totalPaths
+
+#helper for problem 4.12
+def pathsWithSumRecursive(node, target, currentSum, numOfPaths):
+    if (node == None):
+        return 0
+    if (node.value != None):
+        currentSum += node.value
+    if (currentSum == target):
+        return 1 + pathsWithSumRecursive(node.left, target, currentSum, numOfPaths) + pathsWithSumRecursive(node.right, target, currentSum, numOfPaths)
+    else:
+        return pathsWithSumRecursive(node.left, target, currentSum, numOfPaths) + pathsWithSumRecursive(node.right, target, currentSum, numOfPaths)
 
 #test useful functions
 
@@ -527,35 +580,20 @@ if __name__ == "__main__":
     print("---------------------------------")
     print("Test List of depths")
     binaryTree = BinaryTree()
-    binaryTree.insert("I")
-    binaryTree.insert("D")
-    binaryTree.insert("O")
-    binaryTree.insert("L")
-    binaryTree.insert("i")
-    binaryTree.insert("K")
-    binaryTree.insert("E")
+    binaryTree.insert(["I", "d", "O", "L", "i", "K", "E"])
     check([listOfDepths(bst)], [['4->None', '2->6->None', '1->3->5->7->None']])
     check([listOfDepths(binaryTree)], [['I->None', 'D->O->None', 'L->i->K->E->None']])
     check(checkBalanced(binaryTree), True)
     check(checkBalanced(bst), True)
     binarySearchTree = BinarySearchTree()
-    binarySearchTree.insert(5)
-    binarySearchTree.insert(6)
-    binarySearchTree.insert(7)
-    binarySearchTree.insert(8)
+    binarySearchTree.insert([5, 6, 7, 8])
     check(checkBalanced(binarySearchTree), False)
 
     print("---------------------------------")
     print("Test Validate Bst")
     check(validateBst(bst), True)
     binaryTree = BinaryTree()
-    binaryTree.insert(5)
-    binaryTree.insert(2)
-    binaryTree.insert(8)
-    binaryTree.insert(1)
-    binaryTree.insert(6)
-    binaryTree.insert(7)
-    binaryTree.insert(9)
+    binaryTree.insert([5,2, 8, 1, 6, 7, 9])
     check(validateBst(binaryTree), False)
 
     print("---------------------------------")
@@ -577,53 +615,22 @@ if __name__ == "__main__":
     print("---------------------------------")
     print("Test First Common Ancestor")
     binaryTree = BinaryTree()
-    binaryTree.insert('A')
-    binaryTree.insert('B')
-    binaryTree.insert('C')
-    binaryTree.insert('D')
-    binaryTree.insert('E')
-    binaryTree.insert('F')
-    binaryTree.insert('G')
-    binaryTree.insert('H')
-    binaryTree.insert('I')
-    binaryTree.insert('J')
-    binaryTree.insert('K')
-    binaryTree.insert('L')
-    binaryTree.insert('M')
-    binaryTree.insert('N')
-    binaryTree.insert('O')
+    binaryTree.insert(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'])
     check(firstCommonAncestor(binaryTree, 'D', 'F'), 'A')
     check(firstCommonAncestor(binaryTree, 'I', 'K'), 'B')
     check(firstCommonAncestor(binaryTree, 'N', 'O'), 'G')
     check(firstCommonAncestor(binaryTree, 'M', 'N'), 'C')
     binaryTree = BinaryTree()
-    binaryTree.insert(3)
-    binaryTree.insert(5)
-    binaryTree.insert(1)
-    binaryTree.insert(6)
-    binaryTree.insert(2)
-    binaryTree.insert(0)
-    binaryTree.insert(8)
-    binaryTree.insert(None)
-    binaryTree.insert(None)
-    binaryTree.insert(7)
-    binaryTree.insert(4)
+    binaryTree.insert([3, 5, 1, 6, 2, 0, 8, None, None, 7, 4])
     check(firstCommonAncestor(binaryTree, 5, 4), 5)
 
     print("---------------------------------")
     print("Test BST Sequences")
     bst = BinarySearchTree()
-    bst.insert(2)
-    bst.insert(1)
-    bst.insert(3)
+    bst.insert([2,1,3])
     check(bstSequences(bst), [[2,1,3], [2,3,1]])
     bst2 = BinarySearchTree()
-    bst2.insert(4)
-    bst2.insert(2)
-    bst2.insert(6)
-    bst2.insert(1)
-    bst2.insert(3)
-    bst2.insert(5)
+    bst2.insert([4, 2, 6, 1, 3, 5])
     check(len(bstSequences(bst2)), 12)
     bst2.insert(7)
     check(len(bstSequences(bst2)), 48)
@@ -631,30 +638,22 @@ if __name__ == "__main__":
     print("---------------------------------")
     print("Test Check Subtree")
     binaryTree = BinaryTree()
-    binaryTree.insert(3)
-    binaryTree.insert(5)
-    binaryTree.insert(1)
-    binaryTree.insert(6)
-    binaryTree.insert(2)
-    binaryTree.insert(0)
-    binaryTree.insert(8)
+    binaryTree.insert([3, 5, 1, 6, 2, 0, 8])
     subTree = BinaryTree()
-    subTree.insert(5)
-    subTree.insert(6)
-    subTree.insert(2)
+    subTree.insert([5, 6, 2])
     check(checkSubtree(binaryTree, subTree), True)
 
     print("---------------------------------")
     print("Test Random Node")
     bst = BinarySearchTree()
-    bst.insert(4)
-    bst.insert(2)
-    bst.insert(6)
-    bst.insert(1)
-    bst.insert(3)
-    bst.insert(5)
+    bst.insert([4, 2, 6, 1, 3, 5])
     output = {1: 0, 2: 0, 3:0, 4: 0, 5: 0 , 6: 0}
     for i in range(100):
         output[randomNode(bst)]+=1
     print("print random nodes in tree:(every run will result in different output)", output)
 
+    print("---------------------------------")
+    print("Test Paths with Sum")
+    binaryTree = BinaryTree()
+    binaryTree.insert([10, 5, -3, 3, 2, None, 11, 3, -2, None, 1])
+    check(pathsWithSum(binaryTree, 8), 3)
