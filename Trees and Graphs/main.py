@@ -1,4 +1,6 @@
-﻿def check(result, actualResult):
+﻿import random #needed for prob 4.11
+
+def check(result, actualResult):
     #this is to check whether the answer is correct to the result we are expecting
     if result == actualResult:
         print("Correct")
@@ -422,6 +424,26 @@ def checkSubtreeRecursive(nodeA, nodeB):
     if (nodeA.value == nodeB.value):
         return equal(nodeA, nodeB)
     return (checkSubtreeRecursive(nodeA.left, nodeB) or checkSubtreeRecursive(nodeA.right, nodeB))
+
+
+# Problem 4.11
+def randomNode(bt):
+    if (bt.root == None):
+        return
+    return randomNodeRecursive(bt.root)
+    
+def randomNodeRecursive(node):
+    nodeSize = size(node)
+    leftSize = size(node.left)
+    rightSize = size(node.right)
+    rand = random.randint(0, nodeSize-1)
+    if (rand == 0):
+        return node.value
+    elif (rand < (leftSize+1)):
+        return randomNodeRecursive(node.left)
+    else:
+        return randomNodeRecursive(node.right)
+
 #test useful functions
 
 #traverse tree in order, return values in order
@@ -467,6 +489,11 @@ def equal(nodeA, nodeB):
     if (nodeA.value != nodeB.value):
         return False
     return (equal(nodeA.left, nodeB.left) and equal(nodeA.right, nodeB.right))
+
+def size(node):
+    if (node == None):
+        return 0
+    return (1 + size(node.left) + size(node.right))
 
 if __name__ == "__main__":
     print("Test Route Between Nodes")
@@ -616,3 +643,18 @@ if __name__ == "__main__":
     subTree.insert(6)
     subTree.insert(2)
     check(checkSubtree(binaryTree, subTree), True)
+
+    print("---------------------------------")
+    print("Test Random Node")
+    bst = BinarySearchTree()
+    bst.insert(4)
+    bst.insert(2)
+    bst.insert(6)
+    bst.insert(1)
+    bst.insert(3)
+    bst.insert(5)
+    output = {1: 0, 2: 0, 3:0, 4: 0, 5: 0 , 6: 0}
+    for i in range(100):
+        output[randomNode(bst)]+=1
+    print("print random nodes in tree:(every run will result in different output)", output)
+
