@@ -350,6 +350,8 @@ def firstCommonAncestor(bt, nodeA, nodeB):
     return firstCommonAncestorRecursive(bt.root, nodeA, nodeB)
 
 def firstCommonAncestorRecursive(currentNode, nodeA, nodeB):
+    if ((currentNode.value == nodeA) or (currentNode.value==nodeB)):
+            return currentNode.value
     left = isChild(currentNode.left, nodeA) and isChild(currentNode.left, nodeB)
     right = isChild(currentNode.right, nodeA) and isChild(currentNode.right, nodeB)
     if (left and not right):
@@ -360,7 +362,52 @@ def firstCommonAncestorRecursive(currentNode, nodeA, nodeB):
 
 # Problem 4.9
 def bstSequences(bst):
+    if (bst.root == None):
+        return 
+    allPerms = [] #start with root
+    parentQueue = Queue()
+    parentQueue.add(bst.root)
+    while ((not parentQueue.isEmpty()) or (not childrenQueue.isEmpty())):
+        nodesToPermute = []
+        childrenQueue = Queue()
+        while (not parentQueue.isEmpty()):
+            currentNode = parentQueue.remove().value
+            nodesToPermute.append(currentNode.value)
+            if (currentNode.left != None):
+                childrenQueue.add(currentNode.left)
+            if (currentNode.right != None):
+                childrenQueue.add(currentNode.right)
+        childrenPermutations = permList(nodesToPermute) #compute permutation
+        allPerms = concat(allPerms, childrenPermutations) #concat all possible permutations of children to all possible permutations already computed
+        parentQueue = childrenQueue
+    return allPerms
 
+def permList(list):
+    #return all permutations of list
+    if (len(list)==0):
+        return
+    if (len(list) == 1):
+        return [list]
+    allPerms = []
+    for i in range(len(list)):
+        current = list[i]
+        remList = list[:i]+list[i+1:]
+        for perm in permList(remList):
+            allPerms.append([current]+perm)
+    return allPerms
+
+def concat(list1, list2):
+    #print("list1: ", list1)
+    #print("list2: ", list2)
+    allPerms = []
+    if (len(list1) == 0):
+        for p2 in list2:
+            allPerms.append(p2)
+    #return all combinations from every item in list1 concatenated to every item in list2
+    for p1 in list1:
+        for p2 in list2:
+            allPerms.append(p1+p2)
+    return allPerms
 
 #test useful functions
 
@@ -499,3 +546,34 @@ if __name__ == "__main__":
     check(firstCommonAncestor(binaryTree, 'I', 'K'), 'B')
     check(firstCommonAncestor(binaryTree, 'N', 'O'), 'G')
     check(firstCommonAncestor(binaryTree, 'M', 'N'), 'C')
+    binaryTree = BinaryTree()
+    binaryTree.insert(3)
+    binaryTree.insert(5)
+    binaryTree.insert(1)
+    binaryTree.insert(6)
+    binaryTree.insert(2)
+    binaryTree.insert(0)
+    binaryTree.insert(8)
+    binaryTree.insert(None)
+    binaryTree.insert(None)
+    binaryTree.insert(7)
+    binaryTree.insert(4)
+    check(firstCommonAncestor(binaryTree, 5, 4), 5)
+
+    print("---------------------------------")
+    print("Test BST Sequences")
+    bst = BinarySearchTree()
+    bst.insert(2)
+    bst.insert(1)
+    bst.insert(3)
+    check(bstSequences(bst), [[2,1,3], [2,3,1]])
+    bst2 = BinarySearchTree()
+    bst2.insert(4)
+    bst2.insert(2)
+    bst2.insert(6)
+    bst2.insert(1)
+    bst2.insert(3)
+    bst2.insert(5)
+    check(len(bstSequences(bst2)), 12)
+    bst2.insert(7)
+    check(len(bstSequences(bst2)), 48)
